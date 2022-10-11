@@ -17,3 +17,10 @@ spec:
                 name: auth-service
                 port:
                   number: 5000
+          - path: /api/tasks/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: tasks-service
+                port:
+                  number: 5001
