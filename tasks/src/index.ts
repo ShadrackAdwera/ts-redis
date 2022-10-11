@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { natsWraper } from '@adwesh/common';
+import { initRedis } from './init-redis';
 
 import { app } from './app';
 
@@ -31,6 +32,7 @@ const start = async () => {
       process.env.NATS_CLIENT_ID!,
       process.env.NATS_URI!
     );
+    await initRedis.connect();
     natsWraper.client.on('close', () => {
       console.log('NATS shutting down . . .');
       process.exit();
