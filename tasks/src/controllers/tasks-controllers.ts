@@ -48,6 +48,7 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   }
   // if yes respond to request then return
   if (cachedTasks) {
+    console.log('Serving data from CACHE . . . ');
     const tasks = JSON.parse(cachedTasks);
     return res.status(200).json({ totalTasks: tasks.length, tasks });
   }
