@@ -3,6 +3,7 @@ import { validationResult } from 'express-validator';
 import { HttpError } from '@adwesh/common';
 
 import { Task, taskStatus } from '../models/Tasks';
+import { initRedis } from '../init-redis';
 
 const createTask = async (req: Request, res: Response, next: NextFunction) => {
   const error = validationResult(req);
@@ -31,13 +32,47 @@ const createTask = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   let foundTasks;
+  let cachedTasks;
   let userId = <string>req.user?.userId;
+
+  // check if the cached data exists related to query
+  try {
+    cachedTasks = await initRedis.client.get(userId);
+  } catch (error) {
+    return next(
+      new HttpError(
+        error instanceof Error ? error.message : 'An error occured',
+        500
+      )
+    );
+  }
+  // if yes respond to request then return
+  if (cachedTasks) {
+    const tasks = JSON.parse(cachedTasks);
+    return res.status(200).json({ totalTasks: tasks.length, tasks });
+  }
+
   try {
     foundTasks = await Task.find({ createdBy: userId }).exec();
   } catch (error) {
-    return next(new HttpError('An error occured, try again', 500));
+    return next(
+      new HttpError(
+        error instanceof Error ? error.message : 'An error occured',
+        500
+      )
+    );
   }
-
+  // if no, respond to request then update cache to store the data
+  try {
+    await initRedis.client.set(userId, JSON.stringify(foundTasks));
+  } catch (error) {
+    return next(
+      new HttpError(
+        error instanceof Error ? error.message : 'An error occured',
+        500
+      )
+    );
+  }
   res.status(200).json({ totalTasks: foundTasks.length, tasks: foundTasks });
 };
 
