@@ -25,7 +25,12 @@ const createTask = async (req: Request, res: Response, next: NextFunction) => {
   try {
     await newTask.save();
   } catch (error) {
-    return next(new HttpError('An error occured, try again', 500));
+    return next(
+      new HttpError(
+        error instanceof Error ? error.message : 'Ann error occured',
+        500
+      )
+    );
   }
 
   res.status(201).json({ message: 'New task created', task: newTask });
@@ -33,10 +38,10 @@ const createTask = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   let foundTasks;
-  let userId = <string>req.user?.userId;
+  //let userId = req.user?.userId;
 
   try {
-    foundTasks = await Task.find({ createdBy: userId });
+    foundTasks = await Task.find();
   } catch (error) {
     return next(
       new HttpError(

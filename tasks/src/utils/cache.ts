@@ -14,7 +14,7 @@ mongoose.Query.prototype.exec = async function () {
   const key = JSON.stringify(objKey);
   const cacheVal = await initRedis.client.get(key);
 
-  if (cacheVal) {
+  if (cacheVal && cacheVal.length > 0) {
     const doc = JSON.parse(cacheVal);
     return Array.isArray(doc)
       ? doc.map((d) => new this.model(d))
@@ -23,5 +23,6 @@ mongoose.Query.prototype.exec = async function () {
 
   const result = await exec.apply(this);
   await initRedis.client.set(key, JSON.stringify(result));
+  // console.log(result);
   return result;
 };

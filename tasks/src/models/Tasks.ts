@@ -32,7 +32,7 @@ const tasksModel = new Schema(
     status: {
       type: String,
       required: true,
-      enum: Object.keys(taskStatus),
+      enum: Object.values(taskStatus),
       default: taskStatus.pending,
     },
     createdBy: { type: Schema.Types.ObjectId, required: true },
