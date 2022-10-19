@@ -38,10 +38,11 @@ const createTask = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   let foundTasks;
-  //let userId = req.user?.userId;
+  let userId = req.user?.userId;
+  //check if user exists?
 
   try {
-    foundTasks = await Task.find();
+    foundTasks = await Task.find({ createdBy: userId });
   } catch (error) {
     return next(
       new HttpError(

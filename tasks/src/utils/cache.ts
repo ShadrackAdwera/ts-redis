@@ -29,6 +29,7 @@ type CacheOptions = { key?: string };
 
 mongoose.Query.prototype.cache = function (options: CacheOptions = {}) {
   this.useCache = true;
+  this.hashKey = JSON.stringify(options.key || '');
   return this;
 };
 
@@ -41,7 +42,8 @@ mongoose.Query.prototype.exec = async function () {
     collection: this.model.collection.collectionName,
   });
   const key = JSON.stringify(objKey);
-  const cacheVal = await initRedis.client.get(key);
+  // hGet pulls data out of a nested hash
+  const cacheVal = await initRedis.client.hGet(this.hashKey, key);
 
   if (cacheVal && cacheVal.length > 0) {
     const doc = JSON.parse(cacheVal);
@@ -51,7 +53,13 @@ mongoose.Query.prototype.exec = async function () {
   }
 
   const result = await exec.apply(this);
-  await initRedis.client.set(key, JSON.stringify(result));
+  await initRedis.client.hSet(this.hashKey, key, JSON.stringify(result));
   // console.log(result);
   return result;
 };
+
+function clearHash(hashKey: string | number): void {
+  initRedis.client.del(JSON.stringify(hashKey));
+}
+
+export { clearHash };
