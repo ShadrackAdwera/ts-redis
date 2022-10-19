@@ -7,5 +7,5 @@ export const clearCache = async (
   next: NextFunction
 ) => {
   await next();
-  clearHash(req.user ? req.user.userId : '');
+  await clearHash(req.user ? req.user.userId : '');
 };

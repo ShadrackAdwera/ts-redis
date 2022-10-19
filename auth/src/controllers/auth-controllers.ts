@@ -118,12 +118,10 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     return next(new HttpError('An error occured, try again', 500));
   }
 
-  res
-    .status(201)
-    .json({
-      message: 'Sign Up successful',
-      user: { id: newUser.id, email, token },
-    });
+  res.status(201).json({
+    message: 'Sign Up successful',
+    user: { id: newUser.id, email, token },
+  });
 };
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
@@ -309,11 +307,9 @@ const modifyUserRole = async (
   } catch (error) {
     return next(new HttpError('An error occured, try again', 500));
   }
-  res
-    .status(201)
-    .json({
-      message: `${userRole} role has been added to ${foundUser.username}'s roles`,
-    });
+  res.status(201).json({
+    message: `${userRole} role has been added to ${foundUser.username}'s roles`,
+  });
 };
 
 export {

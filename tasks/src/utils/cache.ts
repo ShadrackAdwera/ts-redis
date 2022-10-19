@@ -16,7 +16,7 @@ declare module 'mongoose' {
     mongooseCollection: {
       name: any;
     };
-    cache(): DocumentQuery<T[], Document> & QueryHelpers;
+    cache(options?: CacheOptions): DocumentQuery<T[], Document> & QueryHelpers;
     useCache: boolean;
     hashKey: string;
   }
@@ -58,8 +58,8 @@ mongoose.Query.prototype.exec = async function () {
   return result;
 };
 
-function clearHash(hashKey: string | number): void {
-  initRedis.client.del(JSON.stringify(hashKey));
+async function clearHash(hashKey: string | number): Promise<void> {
+  await initRedis.client.del(JSON.stringify(hashKey));
 }
 
 export { clearHash };
