@@ -42,7 +42,7 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   //check if user exists?
 
   try {
-    foundTasks = await Task.find({ createdBy: userId });
+    foundTasks = await Task.find({ createdBy: userId }).cache();
   } catch (error) {
     return next(
       new HttpError(
@@ -51,7 +51,7 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
       )
     );
   }
-  res.status(200).json({ totalTasks: foundTasks.length, tasks: foundTasks });
+  res.status(200).json({ tasks: foundTasks });
 };
 
 const getPendingTasks = async (
