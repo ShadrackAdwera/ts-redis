@@ -9,6 +9,7 @@ import {
   getPendingTasks,
   updateTasksAssigned,
 } from '../controllers/tasks-controllers';
+import { clearCache } from '../utils/clearCache';
 
 const router = express.Router();
 
@@ -22,6 +23,7 @@ router.post(
     body('title').trim().not().isEmpty(),
     body('description').trim().not().isEmpty(),
   ],
+  clearCache,
   createTask
 );
 router.patch('/:taskId', updateTasksAssigned);
