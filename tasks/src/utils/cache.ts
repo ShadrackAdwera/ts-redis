@@ -7,7 +7,36 @@ const exec: {
   (callback?: mongoose.Callback<any> | undefined): any;
 } = mongoose.Query.prototype.exec;
 
+declare module 'mongoose' {
+  interface DocumentQuery<
+    T,
+    DocType extends import('mongoose').Document,
+    QueryHelpers = {}
+  > {
+    mongooseCollection: {
+      name: any;
+    };
+    cache(): DocumentQuery<T[], Document> & QueryHelpers;
+    useCache: boolean;
+    hashKey: string;
+  }
+
+  interface Query<ResultType, DocType, THelpers = {}, RawDocType = DocType>
+    extends DocumentQuery<any, any> {}
+}
+
+type CacheOptions = { key?: string };
+
+mongoose.Query.prototype.cache = function (options: CacheOptions = {}) {
+  this.useCache = true;
+  return this;
+};
+
 mongoose.Query.prototype.exec = async function () {
+  if (!this.useCache) {
+    return exec.apply(this);
+  }
+
   const objKey = Object.assign({}, this.getQuery(), {
     collection: this.model.collection.collectionName,
   });
