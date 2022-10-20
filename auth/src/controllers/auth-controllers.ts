@@ -14,8 +14,7 @@ const DEFAULT_PASSWORD = '123456';
 const addUsers = async (req: Request, res: Response, next: NextFunction) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return res.status(422).json({ errors: error.array() });
-    //return next(new HttpError('Invalid inputs', 422));
+    return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   let hashedPassword: string;
@@ -70,8 +69,7 @@ const addUsers = async (req: Request, res: Response, next: NextFunction) => {
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return res.status(422).json({ errors: error.array() });
-    //return next(new HttpError('Invalid inputs', 422));
+    return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   let hashedPassword: string;
@@ -129,8 +127,7 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
 const login = async (req: Request, res: Response, next: NextFunction) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return res.status(422).json({ errors: error.array() });
-    //return next(new HttpError('Invalid inputs', 422));
+    return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   let isPassword: boolean;
@@ -219,8 +216,7 @@ const resetPassword = async (
 
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return res.status(422).json({ errors: error.array() });
-    //return next(new HttpError('Invalid inputs', 422));
+    return next(new HttpError('Invalid email', 422));
   }
 
   //check if passwords match
@@ -268,8 +264,7 @@ const modifyUserRole = async (
 ) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return res.status(422).json({ errors: error.array() });
-    //return next(new HttpError('Invalid inputs', 422));
+    return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   const { userRole } = req.body;
