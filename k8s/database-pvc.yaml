@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: database-pvc
+  name: ts-redis-database-pvc
 spec:
   resources:
     requests:
