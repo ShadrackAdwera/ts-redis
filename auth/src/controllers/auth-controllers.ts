@@ -219,7 +219,8 @@ const resetPassword = async (
 
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(new HttpError('Invalid email', 422));
+    return res.status(422).json({ errors: error.array() });
+    //return next(new HttpError('Invalid inputs', 422));
   }
 
   //check if passwords match
