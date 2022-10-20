@@ -14,7 +14,8 @@ const DEFAULT_PASSWORD = '123456';
 const addUsers = async (req: Request, res: Response, next: NextFunction) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(new HttpError('Invalid inputs', 422));
+    return res.status(422).json({ errors: error.array() });
+    //return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   let hashedPassword: string;
@@ -69,7 +70,8 @@ const addUsers = async (req: Request, res: Response, next: NextFunction) => {
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(new HttpError('Invalid inputs', 422));
+    return res.status(422).json({ errors: error.array() });
+    //return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   let hashedPassword: string;
@@ -127,7 +129,8 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
 const login = async (req: Request, res: Response, next: NextFunction) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(new HttpError('Invalid inputs', 422));
+    return res.status(422).json({ errors: error.array() });
+    //return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   let isPassword: boolean;
@@ -166,12 +169,10 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     return next(new HttpError('An error occured, try again', 500));
   }
 
-  res
-    .status(201)
-    .json({
-      message: 'Login Successful',
-      user: { id: foundUser.id, email, token, roles: foundUser.roles },
-    });
+  res.status(201).json({
+    message: 'Login Successful',
+    user: { id: foundUser.id, email, token, roles: foundUser.roles },
+  });
 };
 
 const requestPasswordReset = async (
@@ -266,7 +267,8 @@ const modifyUserRole = async (
 ) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(new HttpError('Invalid inputs', 422));
+    return res.status(422).json({ errors: error.array() });
+    //return next(new HttpError('Invalid inputs', 422));
   }
   let foundUser;
   const { userRole } = req.body;
