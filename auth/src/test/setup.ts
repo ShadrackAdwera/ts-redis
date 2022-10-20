@@ -14,7 +14,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  jest.setTimeout(15000);
+  jest.setTimeout(30000);
   const collections = await mongoose.connection.db.collections();
   collections.forEach((collection) => collection.deleteMany({}));
 });
