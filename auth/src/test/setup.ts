@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 let mongo: MongoMemoryServer;
 
 beforeAll(async () => {
+  process.env.JWT_KEY = '=6:$}/N7Hp21HrX[bCiI`xj49xi,_';
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
 
