@@ -12,9 +12,17 @@ spec:
       labels:
         app: auth-mongo
     spec:
+      volumes:
+        - name: ts-redis-auth-mongo-storage
+          persistentVolumeClaim:
+            claimName: ts-redis-database-pvc
       containers:
         - name: auth-mongo
           image: mongo
+          volumeMounts:
+            - mountPath: /data/db
+              name: ts-redis-auth-mongo-storage
+        
 ---
 apiVersion: v1
 kind: Service
