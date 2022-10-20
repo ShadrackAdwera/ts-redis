@@ -16,9 +16,19 @@ const router = express.Router();
 router.post(
   '/sign-up',
   [
-    body('username').trim().not().isEmpty(),
-    body('email').normalizeEmail().isEmail(),
-    body('password').trim().isLength({ min: 6 }),
+    body('username')
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage('Please provide your username'),
+    body('email')
+      .normalizeEmail()
+      .isEmail()
+      .withMessage('Please provide a valid email'),
+    body('password')
+      .trim()
+      .isLength({ min: 6 })
+      .withMessage('Password must be at least 6 characters'),
   ],
   signUp
 );
