@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 
 let mongo: MongoMemoryServer;
 
+jest.setTimeout(300000);
 beforeAll(async () => {
   process.env.JWT_KEY = '=6:$}/N7Hp21HrX[bCiI`xj49xi,_';
   mongo = await MongoMemoryServer.create();
@@ -21,4 +22,4 @@ beforeEach(async () => {
 afterAll(async () => {
   await mongo.stop();
   await mongoose.connection.close();
-}, 30000);
+});

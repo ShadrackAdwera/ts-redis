@@ -193,7 +193,7 @@ const requestPasswordReset = async (
   }
 
   if (!foundUser) {
-    return next(new HttpError('This account does not exist', 400));
+    return next(new HttpError('This account does not exist', 404));
   }
   const resetTkn = brypto.randomBytes(64).toString('hex');
   const resetDate = new Date(Date.now() + 3600000);
