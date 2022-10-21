@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 
 //import { app } from '../app';
 
+// declare global {
+//   var signin: () => Promise<string[]>;
+// }
+
 let mongo: MongoMemoryServer;
 
 jest.setTimeout(300000);

@@ -141,7 +141,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     return next(new HttpError('An error occured, try again', 500));
   }
   if (!foundUser) {
-    return next(new HttpError('Email does not exist, sign up instead', 400));
+    return next(new HttpError('Email does not exist, sign up instead', 404));
   }
 
   //compare passwords

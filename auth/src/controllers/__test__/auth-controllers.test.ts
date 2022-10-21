@@ -53,18 +53,23 @@ describe('login controller', () => {
     2. Return if password in invalid
     3. Generate JWT if legit credentials
     */
+  beforeEach(async () => {
+    await request(app).post(signUpRoute).send(user).expect(201);
+  });
   it('should return with a 400 if email does not exist', async () => {
-    await request(app).post(loginRoute).send(user).expect(400);
+    await request(app)
+      .post(loginRoute)
+      .send({ email: 'testings@mail.com', password: '12345678' })
+      .expect(404);
   });
   it('should return 422 for invalid password', async () => {
-    await request(app).post(signUpRoute).send(user).expect(201);
     await request(app)
       .post(loginRoute)
       .send({ email: user.email, password: '123456789' })
       .expect(422);
   });
   it('should login successfully on valid email + password combo', async () => {
-    await request(app).post(signUpRoute).send(user).expect(201);
+    //await request(app).post(signUpRoute).send(user).expect(201);
     await request(app).post(loginRoute).send(user).expect(200);
   });
 });
