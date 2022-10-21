@@ -1,3 +1,4 @@
+import { HttpError } from '@adwesh/common';
 import express, { Request, Response, NextFunction } from 'express';
 import { authRouter } from './routes/auth-routes';
 
@@ -10,16 +11,18 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 
 app.use((_req: Request, _res: Response, _next: NextFunction) => {
-  throw new Error('This method / route does not exist!');
+  throw new HttpError('This method / route does not exist!', 404);
 });
 
-app.use((error: Error, _req: Request, res: Response, next: NextFunction) => {
-  if (res.headersSent) {
-    return next(error);
+app.use(
+  (error: HttpError, _req: Request, res: Response, next: NextFunction) => {
+    if (res.headersSent) {
+      return next(error);
+    }
+    res
+      .status(error.code || 500)
+      .json({ message: error.message || 'An error occured, try again!' });
   }
-  res
-    .status(500)
-    .json({ message: error.message || 'An error occured, try again!' });
-});
+);
 
 export { app };

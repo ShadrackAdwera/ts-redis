@@ -1,5 +1,5 @@
+import { initRedis } from '@adwesh/common';
 import mongoose from 'mongoose';
-import { initRedis } from '../init-redis';
 
 const exec: {
   (): Promise<any>;

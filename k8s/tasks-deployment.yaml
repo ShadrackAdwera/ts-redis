@@ -18,6 +18,8 @@ spec:
           env:
             - name: MONGO_URI
               value: 'mongodb://tasks-mongo-service:27017/tasks'
+            - name: REDIS_HOST
+              value: 'ts-redis-service'
             - name: NATS_CLUSTER_ID
               value: 'ts-redis'
             - name: NATS_CLIENT_ID

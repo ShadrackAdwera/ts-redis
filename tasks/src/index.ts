@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import { natsWraper } from '@adwesh/common';
-import { initRedis } from './init-redis';
+import { natsWraper, initRedis } from '@adwesh/common';
 
 import { app } from './app';
 
@@ -10,6 +9,10 @@ if (!process.env.JWT_KEY) {
 
 if (!process.env.MONGO_URI) {
   throw new Error('MONGO URI is not defined!');
+}
+
+if (!process.env.REDIS_HOST) {
+  throw new Error('REDIS HOST is not defined!');
 }
 
 if (!process.env.NATS_CLUSTER_ID) {
@@ -32,7 +35,7 @@ const start = async () => {
       process.env.NATS_CLIENT_ID!,
       process.env.NATS_URI!
     );
-    await initRedis.connect();
+    await initRedis.connect(process.env.REDIS_HOST!);
     natsWraper.client.on('close', () => {
       console.log('NATS shutting down . . .');
       process.exit();

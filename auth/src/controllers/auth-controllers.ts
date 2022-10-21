@@ -155,7 +155,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     return next(new HttpError('Invalid password', 422));
   }
 
-  //generate token
+  //generate token --- also sign using tenant id
   try {
     token = await jwt.sign(
       { id: foundUser.id, email: foundUser.email },
@@ -166,7 +166,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     return next(new HttpError('An error occured, try again', 500));
   }
 
-  res.status(201).json({
+  res.status(200).json({
     message: 'Login Successful',
     user: { id: foundUser.id, email, token, roles: foundUser.roles },
   });
