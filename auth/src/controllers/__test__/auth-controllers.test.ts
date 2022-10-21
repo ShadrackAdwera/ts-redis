@@ -20,22 +20,23 @@ const shortPassword = {
 };
 
 const signUpRoute = '/api/auth/sign-up';
+const loginRoute = '/api/auth/login';
 
 describe('sign up controller', () => {
   it('should sends a POST request to the sign up route with a username, email, password and return a 201', async () => {
     return request(app).post(signUpRoute).send(user).expect(201);
   });
   it('should send a 422 on invalid email', async () => {
-    return request(app).post(signUpRoute).send(invalidEmail).expect(500);
+    return request(app).post(signUpRoute).send(invalidEmail).expect(422);
   });
 
   it('should send a 422 on password less than 6 characters', async () => {
-    return request(app).post(signUpRoute).send(shortPassword).expect(500);
+    return request(app).post(signUpRoute).send(shortPassword).expect(422);
   });
 
   it('should not allow user sign up with the same email', async () => {
     await request(app).post(signUpRoute).send(user).expect(201);
-    await request(app).post(signUpRoute).send(user).expect(500);
+    await request(app).post(signUpRoute).send(user).expect(400);
   });
   it('should sends a jwt on successful sign up', async () => {
     const response = await request(app)
@@ -52,9 +53,23 @@ describe('login controller', () => {
     2. Return if password in invalid
     3. Generate JWT if legit credentials
     */
+  it('should return with a 400 if email does not exist', async () => {
+    await request(app).post(loginRoute).send(user).expect(400);
+  });
+  it('should return 422 for invalid password', async () => {
+    await request(app).post(signUpRoute).send(user).expect(201);
+    await request(app)
+      .post(loginRoute)
+      .send({ email: user.email, password: '123456789' })
+      .expect(400);
+  });
+  it('should login successfully on valid email + password combo', async () => {
+    await request(app).post(signUpRoute).send(user).expect(201);
+    await request(app).post(loginRoute).send(user).expect(200);
+  });
 });
-//b
 describe('add users controller', () => {
+  it('should return a 400 if email exists in DB');
   /*
     1. Check if user exists - return if they do
     2. Publish event
