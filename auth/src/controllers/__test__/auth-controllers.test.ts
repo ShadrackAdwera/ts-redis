@@ -70,7 +70,8 @@ describe('login controller', () => {
   });
   it('should login successfully on valid email + password combo', async () => {
     //await request(app).post(signUpRoute).send(user).expect(201);
-    await request(app).post(loginRoute).send(user).expect(200);
+    await global.login();
+    //await request(app).post(loginRoute).send(user).expect(200);
   });
 });
 describe('add users controller', () => {
