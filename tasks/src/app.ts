@@ -9,14 +9,18 @@ app.use(express.json());
 app.use('/api/tasks', tasksRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-    throw new HttpError('This method / route does not exist', 404);
+  throw new HttpError('This method / route does not exist', 404);
 });
 
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-    if(res.headersSent) {
-        return next(error);
-    }
-    res.status(500).json({message: error.message || 'Unable to fulfill your request at the moment.'});
+app.use((error: HttpError, req: Request, res: Response, next: NextFunction) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+  res
+    .status(error.code || 500)
+    .json({
+      message: error.message || 'Unable to fulfill your request at the moment.',
+    });
 });
 
 export { app };
