@@ -17,13 +17,22 @@ router.use(checkAuth);
 
 router.get('/', getAllTasks);
 router.get('/pending', getPendingTasks);
+// cache implementation
+// router.post(
+//   '/new',
+//   [
+//     body('title').trim().not().isEmpty(),
+//     body('description').trim().not().isEmpty(),
+//   ],
+//   clearCache,
+//   createTask
+// );
 router.post(
   '/new',
   [
     body('title').trim().not().isEmpty(),
     body('description').trim().not().isEmpty(),
   ],
-  clearCache,
   createTask
 );
 router.patch('/:taskId', updateTasksAssigned);

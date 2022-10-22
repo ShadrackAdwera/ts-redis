@@ -42,7 +42,8 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   //check if user exists?
 
   try {
-    foundTasks = await Task.find({ createdBy: userId }).cache({ key: userId });
+    //foundTasks = await Task.find({ createdBy: userId }).cache({ key: userId });
+    foundTasks = await Task.find({ createdBy: userId });
   } catch (error) {
     return next(
       new HttpError(
@@ -99,11 +100,9 @@ const updateTasksAssigned = async (
   } catch (error) {
     return next(new HttpError('An error occured, try again', 500));
   }
-  res
-    .status(200)
-    .json({
-      message: `Task with Id: ${foundTask.id} has been updated to  ${foundTask.status}`,
-    });
+  res.status(200).json({
+    message: `Task with Id: ${foundTask.id} has been updated to  ${foundTask.status}`,
+  });
 };
 
 export { getAllTasks, getPendingTasks, createTask, updateTasksAssigned };

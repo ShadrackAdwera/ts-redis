@@ -36,6 +36,9 @@ global.login = () => {
   //await await request(app).post(signUpRoute).send(user).expect(201);
   // const response = await request(app).post(loginRoute).send(user).expect(200);
   // return response.body.user.token;
-  const payload = { id: '5tlmaslco2laa', email: 'test@mail.com' };
+  const payload = {
+    userId: '635103ec1f8c105448994291',
+    email: 'test@mail.com',
+  };
   return jwt.sign(payload, process.env.JWT_KEY!);
 };
