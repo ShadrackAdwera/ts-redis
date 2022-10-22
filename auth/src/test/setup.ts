@@ -1,6 +1,8 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
+import request from 'supertest';
+
+import { app } from '../app';
 
 interface ILogin {
   message: string;
@@ -8,11 +10,12 @@ interface ILogin {
     id: string;
     email: string;
     token: string;
+    roles: string[];
   };
 }
 
 declare global {
-  var login: () => ILogin;
+  var login: () => Promise<ILogin>;
 }
 
 let mongo: MongoMemoryServer;
@@ -44,18 +47,8 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.login = () => {
+global.login = async () => {
   //await await request(app).post(signUpRoute).send(user).expect(201);
-  // const response = await request(app).post(loginRoute).send(user).expect(200);
-  // return response.body.user.token;
-  const payload = { id: '5tlmaslco2laa', email: 'test@mail.com' };
-  const token = jwt.sign(payload, process.env.JWT_KEY!);
-  return {
-    message: 'Login Successful',
-    user: {
-      email: payload.email,
-      id: payload.id,
-      token,
-    },
-  };
+  const response = await request(app).post(loginRoute).send(user).expect(200);
+  return response.body.user.token;
 };
