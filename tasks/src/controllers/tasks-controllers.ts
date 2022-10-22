@@ -99,6 +99,11 @@ const updateTasksAssigned = async (
   } catch (error) {
     return next(new HttpError('An error occured, try again', 500));
   }
+  res
+    .status(200)
+    .json({
+      message: `Task with Id: ${foundTask.id} has been updated to  ${foundTask.status}`,
+    });
 };
 
 export { getAllTasks, getPendingTasks, createTask, updateTasksAssigned };
