@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../../app';
+import { Task } from '../../models/Tasks';
 
 const tasksRoute = '/api/tasks';
 const newTask = {
@@ -45,6 +46,19 @@ describe('tasks controllers', () => {
         .set('Authorization', `Bearer ${global.login()}`)
         .send(newTask)
         .expect(201);
+    });
+    it('should save the task to the DB', async () => {
+      let tasks = await Task.find({});
+      expect(tasks.length).toEqual(0);
+      const response = await request(app)
+        .post(`${tasksRoute}/new`)
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${global.login()}`)
+        .send(newTask);
+      expect(response.status).toEqual(201);
+      tasks = await Task.find({});
+      expect(tasks.length).toEqual(1);
+      expect(tasks[0].title).toEqual(newTask.title);
     });
   });
   describe('get all tasks controller', () => {
