@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, request } from 'express';
 import { validationResult } from 'express-validator';
 import { HttpError } from '@adwesh/common';
 
@@ -55,6 +55,26 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({ tasks: foundTasks });
 };
 
+const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.taskId;
+  let foundTask;
+  console.log(id);
+  try {
+    foundTask = await Task.findById(id);
+  } catch (error) {
+    console.log(error);
+    return next(
+      new HttpError(
+        error instanceof Error ? error.message : 'An error occurred',
+        500
+      )
+    );
+  }
+
+  if (!foundTask) return new HttpError('This task does not exist', 404);
+  res.status(200).json({ task: foundTask });
+};
+
 const getPendingTasks = async (
   req: Request,
   res: Response,
@@ -105,4 +125,10 @@ const updateTasksAssigned = async (
   });
 };
 
-export { getAllTasks, getPendingTasks, createTask, updateTasksAssigned };
+export {
+  getAllTasks,
+  getPendingTasks,
+  createTask,
+  updateTasksAssigned,
+  getTaskById,
+};

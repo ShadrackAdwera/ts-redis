@@ -1,6 +1,7 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import { generateTaskId } from '../utils/generateTaskId';
 
 declare global {
   var login: () => string;
@@ -13,7 +14,7 @@ const user = {
   password: '1qaz2wsx',
 };
 
-jest.setTimeout(300000);
+jest.setTimeout(3000000);
 beforeAll(async () => {
   process.env.JWT_KEY = '=6:$}/N7Hp21HrX[bCiI`xj49xi,_';
   mongo = await MongoMemoryServer.create();
@@ -37,7 +38,7 @@ global.login = () => {
   // const response = await request(app).post(loginRoute).send(user).expect(200);
   // return response.body.user.token;
   const payload = {
-    userId: '635103ec1f8c105448994291',
+    userId: generateTaskId(),
     email: 'test@mail.com',
   };
   return jwt.sign(payload, process.env.JWT_KEY!);

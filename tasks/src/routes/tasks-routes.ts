@@ -7,16 +7,17 @@ import {
   createTask,
   getAllTasks,
   getPendingTasks,
+  getTaskById,
   updateTasksAssigned,
 } from '../controllers/tasks-controllers';
-import { clearCache } from '../utils/clearCache';
+//import { clearCache } from '../utils/clearCache';
 
 const router = express.Router();
 
 router.use(checkAuth);
 
 router.get('/', getAllTasks);
-router.get('/pending', getPendingTasks);
+router.get('/pending-tasks/all', getPendingTasks);
 // cache implementation
 // router.post(
 //   '/new',
@@ -27,6 +28,7 @@ router.get('/pending', getPendingTasks);
 //   clearCache,
 //   createTask
 // );
+router.get('/:taskId', getTaskById);
 router.post(
   '/new',
   [
