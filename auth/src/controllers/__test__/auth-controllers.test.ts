@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { app } from '../../app';
+import { User } from '../../models/User';
 
 const user = {
   username: 'test user',
@@ -44,6 +45,16 @@ describe('sign up controller', () => {
       .send(user)
       .expect(201);
     expect(response.body.user.token).toBeDefined();
+  });
+  it('should save the user to the DB on sucessful sign up', async () => {
+    let users = await User.find({});
+    // expect user to be 0 since the DB was cleared - before the tests
+    expect(users.length).toEqual(0);
+    const response = await request(app).post(signUpRoute).send(user);
+    expect(response.status).toBe(201);
+    users = await User.find({});
+    expect(users.length).toEqual(1);
+    expect(users[0].username).toEqual(user.username);
   });
 });
 
