@@ -88,32 +88,32 @@ describe('tasks controllers', () => {
     });
   });
   describe('get task by id controller', () => {
-    // it('should return a 401 when fetching a task without authentication', async () => {
-    //   return request(app).get(`${tasksRoute}/${ticketId}`).expect(401);
-    // });
-    // it('should return a 404 when a task is not found', async () => {
-    //   return request(app)
-    //     .get(`${tasksRoute}/${ticketId}`)
-    //     .set('Content-Type', 'application/json')
-    //     .set('Authorization', `Bearer ${global.login()}`)
-    //     .expect(404);
-    // });
-    // it('should return a 200 when the task by ID is found', async () => {
-    //   const response = await request(app)
-    //     .post(`${tasksRoute}/new`)
-    //     .set('Content-Type', 'application/json')
-    //     .set('Authorization', `Bearer ${global.login()}`)
-    //     .send(newTask)
-    //     .expect(201);
-    //   const taskCreated = await request(app)
-    //     .get(`${tasksRoute}/${response.body.id}`)
-    //     .set('Content-Type', 'application/json')
-    //     .set('Authorization', `Bearer ${global.login()}`)
-    //     .expect(200);
-    //   expect(taskCreated.body.title).toEqual(newTask.title);
-    //   expect(taskCreated.body.description).toEqual(newTask.description);
-    //   expect(taskCreated.body.image).toEqual(newTask.image);
-    // });
+    it('should return a 401 when fetching a task without authentication', async () => {
+      return request(app).get(`${tasksRoute}/${ticketId}`).expect(401);
+    });
+    it('should return a 404 when a task is not found', async () => {
+      return request(app)
+        .get(`${tasksRoute}/${ticketId}`)
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${global.login()}`)
+        .expect(404);
+    });
+    it('should return a 200 when the task by ID is found', async () => {
+      const response = await request(app)
+        .post(`${tasksRoute}/new`)
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${global.login()}`)
+        .send(newTask)
+        .expect(201);
+      const taskCreated = await request(app)
+        .get(`${tasksRoute}/${response.body.id}`)
+        .set('Content-Type', 'application/json')
+        .set('Authorization', `Bearer ${global.login()}`)
+        .expect(200);
+      expect(taskCreated.body.title).toEqual(newTask.title);
+      expect(taskCreated.body.description).toEqual(newTask.description);
+      expect(taskCreated.body.image).toEqual(newTask.image);
+    });
   });
   describe('update task status controller', () => {
     it.todo(

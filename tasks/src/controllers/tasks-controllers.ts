@@ -58,7 +58,6 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
 const getTaskById = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.taskId;
   let foundTask;
-  console.log(id);
   try {
     foundTask = await Task.findById(id);
   } catch (error) {
