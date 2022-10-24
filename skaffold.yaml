@@ -5,10 +5,12 @@ deploy:
     manifests:
       - ./k8s/*
 build:
-  local:
-    push: false
+  # local:
+  #   push: false
+  googleCloudBuild:
+    projectId: tasks-dev-366501
   artifacts:
-    - image: adwera/ts-redis-auth
+    - image: us.gcr.io/tasks-dev-366501/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -16,7 +18,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: adwera/ts-redis-tasks
+    - image: us.gcr.io/tasks-dev-366501/tasks
       context: tasks
       docker:
         dockerfile: Dockerfile
@@ -24,3 +26,11 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
+    - image: us.gcr.io/tasks-dev-366501/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.js'

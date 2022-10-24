@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: tasks
-          image: adwera/ts-redis-tasks 
+          image: us.gcr.io/tasks-dev-366501/tasks 
           env:
             - name: MONGO_URI
               value: 'mongodb://tasks-mongo-service:27017/tasks'

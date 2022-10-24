@@ -42,8 +42,8 @@ const getAllTasks = async (req: Request, res: Response, next: NextFunction) => {
   //check if user exists?
 
   try {
-    //foundTasks = await Task.find({ createdBy: userId }).cache({ key: userId });
-    foundTasks = await Task.find({ createdBy: userId });
+    foundTasks = await Task.find({ createdBy: userId }).cache({ key: userId });
+    //foundTasks = await Task.find({ createdBy: userId });
   } catch (error) {
     return next(
       new HttpError(
