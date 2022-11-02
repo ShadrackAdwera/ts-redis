@@ -8,9 +8,9 @@ build:
   # local:
   #   push: false
   googleCloudBuild:
-    projectId: tasks-dev-366501
+    projectId: ts-redis
   artifacts:
-    - image: us.gcr.io/tasks-dev-366501/auth
+    - image: us.gcr.io/ts-redis/auth
       context: auth
       docker:
         dockerfile: Dockerfile
@@ -18,7 +18,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: us.gcr.io/tasks-dev-366501/tasks
+    - image: us.gcr.io/ts-redis/tasks
       context: tasks
       docker:
         dockerfile: Dockerfile
@@ -26,7 +26,7 @@ build:
         manual:
           - dest: .
             src: 'src/**/*.ts'
-    - image: us.gcr.io/tasks-dev-366501/client
+    - image: us.gcr.io/ts-redis/client
       context: client
       docker:
         dockerfile: Dockerfile

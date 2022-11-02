@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: us.gcr.io/tasks-dev-366501/client 
+          image: us.gcr.io/ts-redis/client 
 ---
 apiVersion: v1
 kind: Service
