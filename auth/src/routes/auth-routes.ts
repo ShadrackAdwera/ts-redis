@@ -9,6 +9,7 @@ import {
   resetPassword,
   modifyUserRole,
   addUsers,
+  currentUser,
 } from '../controllers/auth-controllers';
 
 const router = express.Router();
@@ -71,6 +72,7 @@ router.patch(
 );
 
 router.use(checkAuth);
+router.get('/api/auth/:id', currentUser);
 router.post(
   '/new-user',
   [
