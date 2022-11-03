@@ -14,9 +14,11 @@ const MainNavigation = () => {
       )}
       <nav>
         <ul>
-          <li>
-            <Link to='/auth'>Login</Link>
-          </li>
+          {!userInfo && (
+            <li>
+              <Link to='/auth'>Login</Link>
+            </li>
+          )}
           {userInfo && (
             <li>
               <Link to='/profile'>Profile</Link>
