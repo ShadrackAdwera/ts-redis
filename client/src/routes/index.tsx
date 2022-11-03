@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useRoutes, Navigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import UserProfile from '../components/profile/UserProfile';
+import AuthGuard from '../guards/AuthGuard';
 import AuthPage from '../pages/AuthPage';
 import HomePage from '../pages/HomePage';
 
@@ -14,7 +15,9 @@ export const Router = () => {
           path: '',
           element: (
             <Layout>
-              <HomePage />
+              <AuthGuard>
+                <HomePage />
+              </AuthGuard>
             </Layout>
           ),
         },
@@ -22,7 +25,9 @@ export const Router = () => {
           path: 'profile',
           element: (
             <Layout>
-              <UserProfile />
+              <AuthGuard>
+                <UserProfile />
+              </AuthGuard>
             </Layout>
           ),
         },
