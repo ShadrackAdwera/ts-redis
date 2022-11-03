@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator';
 import { natsWraper } from '@adwesh/common';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
 
 import { UserCreatedPublisher } from '../events/publishers/user-created-publisher';
 import { User, userRoles } from '../models/User';
@@ -64,6 +65,23 @@ const addUsers = async (req: Request, res: Response, next: NextFunction) => {
     return next(new HttpError('An error occured, try again', 500));
   }
   res.status(201).json({ message: 'User created' });
+};
+
+const currentUser = async (req: Request, res: Response, next: NextFunction) => {
+  const id = req.params.id;
+  if (!mongoose.isValidObjectId(id))
+    return new HttpError('Invalid ID provided', 422);
+
+  let foundUser;
+  try {
+    foundUser = await User.findById(id);
+  } catch (error) {
+    return next(new HttpError('An error occured, try again', 500));
+  }
+  if (!foundUser) {
+    return next(new HttpError('Email does not exist, sign up instead', 404));
+  }
+  res.status(200).json({ user: foundUser });
 };
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -317,4 +335,5 @@ export {
   resetPassword,
   addUsers,
   modifyUserRole,
+  currentUser,
 };
