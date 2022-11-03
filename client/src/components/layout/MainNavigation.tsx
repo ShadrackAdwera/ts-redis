@@ -4,7 +4,7 @@ import useUser from '../../hooks/useUser';
 import classes from './MainNavigation.module.css';
 
 const MainNavigation = () => {
-  const { userInfo } = useUser();
+  const { userInfo, clearUser } = useUser();
   return (
     <header className={classes.header}>
       {userInfo && (
@@ -26,7 +26,7 @@ const MainNavigation = () => {
           )}
           {userInfo && (
             <li>
-              <button onClick={() => {}}>Logout</button>
+              <button onClick={clearUser}>Logout</button>
             </li>
           )}
         </ul>

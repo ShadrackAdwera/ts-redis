@@ -31,6 +31,7 @@ const ProfileForm = () => {
         <div className={classes.control}>
           <label htmlFor='task-image'>Image</label>
           <input type='text' id='task-image' required {...register('image')} />
+          <small>use the url: /images/pann.png</small>
         </div>
         {/* <div className={classes.control}>
           image shall go here

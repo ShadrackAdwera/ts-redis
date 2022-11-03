@@ -56,6 +56,7 @@ const useUser = (): TUseUser => {
   };
   const clearUser = (): void => {
     queryClient.setQueryData([queryKeys.USER], null);
+    clearLocalStorage();
   };
 
   return { userInfo: data, updateUser, clearUser };
