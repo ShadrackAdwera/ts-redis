@@ -71,10 +71,9 @@ const currentUser = async (req: Request, res: Response, next: NextFunction) => {
   const id = req.params.id;
   if (!mongoose.isValidObjectId(id))
     return new HttpError('Invalid ID provided', 422);
-
   let foundUser;
   try {
-    foundUser = await User.findById(id);
+    foundUser = await User.findById(id).projection('-password');
   } catch (error) {
     return next(new HttpError('An error occured, try again', 500));
   }

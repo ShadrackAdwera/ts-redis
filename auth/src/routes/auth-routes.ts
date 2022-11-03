@@ -72,7 +72,7 @@ router.patch(
 );
 
 router.use(checkAuth);
-router.get('/api/auth/:id', currentUser);
+router.get('/user/:id', currentUser);
 router.post(
   '/new-user',
   [

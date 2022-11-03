@@ -4,6 +4,12 @@ export type TAuth = {
   password: string;
 };
 
+export type TUserData = {
+  id: string;
+  email: string;
+  token: string;
+};
+
 export type TAuthResponse = {
   message: string;
   user: {

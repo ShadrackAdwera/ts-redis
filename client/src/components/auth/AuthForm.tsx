@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
 
 import { TAuth } from '../../utils/types';
 import classes from './AuthForm.module.css';
@@ -7,6 +8,7 @@ import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const { login, signUp } = useAuth();
   const { register, handleSubmit } = useForm<TAuth>();
 
   const switchAuthModeHandler = () => {
@@ -15,10 +17,10 @@ const AuthForm = () => {
 
   const onSubmit: SubmitHandler<TAuth> = (data) => {
     if (isLogin) {
-      console.log(data);
+      login(data);
     } else {
       //username must be provided - call signUp here
-      console.log(data);
+      signUp(data);
     }
   };
 

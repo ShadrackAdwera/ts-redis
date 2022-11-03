@@ -90,7 +90,7 @@ describe('login controller', () => {
 });
 describe('current user', () => {
   it('returns a 401 when accessing the endpoint without authentication', async () => {
-    return request(app).get(`/api/auth/${id}`).send({}).expect(401);
+    return request(app).get(`/api/auth/user/${id}`).send({}).expect(401);
   });
   it('returns the currently logged in user', async () => {
     const response = await request(app)
@@ -102,8 +102,9 @@ describe('current user', () => {
       })
       .expect(201);
     return request(app)
-      .get(`/api/auth/${response.body.user.id}`)
-      .set('Authorization', ` Bearer ${global.login()}`)
+      .get(`/api/auth/user/${response.body.user.id}`)
+      .set('Authorization', `Bearer ${response.body.user.token}`)
+      .send({})
       .expect(200);
   });
 });
