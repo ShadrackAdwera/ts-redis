@@ -1,28 +1,44 @@
+import { useForm, SubmitHandler } from 'react-hook-form';
 //import Spinner from '../Shared/Spinner';
+import { INewTask } from '../../utils/types';
+import useMutateTasks from '../../hooks/useMutateTask';
 import classes from './ProfileForm.module.css';
 
 const ProfileForm = () => {
+  const { isLoading, mutate } = useMutateTasks();
+  const { register, handleSubmit } = useForm<INewTask>();
+
+  const onSubmit: SubmitHandler<INewTask> = (data) => {
+    mutate(data);
+  };
+
   return (
     <>
-      <form className={classes.form} onSubmit={() => {}}>
+      <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={classes.control}>
-          <label htmlFor='store-name'>Store Name</label>
-          <input type='text' id='store-name' required />
+          <label htmlFor='task-name'>Title</label>
+          <input type='text' id='task-name' required {...register('title')} />
         </div>
         <div className={classes.control}>
-          <label htmlFor='store-email'>Store Email</label>
-          <input type='text' id='store-email' required />
+          <label htmlFor='task-description'>Description</label>
+          <input
+            type='text'
+            id='task-description'
+            required
+            {...register('description')}
+          />
         </div>
         <div className={classes.control}>
-          <label htmlFor='store-location'>Store Location</label>
-          <input type='text' id='store-location' required />
+          <label htmlFor='task-image'>Image</label>
+          <input type='text' id='task-image' required {...register('image')} />
         </div>
-        <div className={classes.control}>
-          <label htmlFor='store-contact'>Store Contact</label>
-          <input type='text' id='store-contact' required />
-        </div>
+        {/* <div className={classes.control}>
+          image shall go here
+          <label htmlFor='image'>Task Image</label>
+          <input type='file' id='image' required />
+        </div> */}
         <div className={classes.action}>
-          <button>Add Store</button>
+          <button disabled={isLoading}>Add Task</button>
         </div>
       </form>
     </>
