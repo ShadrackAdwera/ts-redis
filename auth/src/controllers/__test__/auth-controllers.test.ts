@@ -1,4 +1,6 @@
 import request from 'supertest';
+import mongoose from 'mongoose';
+
 import { app } from '../../app';
 import { User } from '../../models/User';
 
@@ -20,6 +22,7 @@ const shortPassword = {
   password: '1qaz',
 };
 
+const id = new mongoose.Types.ObjectId();
 const signUpRoute = '/api/auth/sign-up';
 const loginRoute = '/api/auth/login';
 
@@ -83,6 +86,25 @@ describe('login controller', () => {
     //await request(app).post(signUpRoute).send(user).expect(201);
     await global.login();
     //await request(app).post(loginRoute).send(user).expect(200);
+  });
+});
+describe('current user', () => {
+  it('returns a 401 when accessing the endpoint without authentication', async () => {
+    return request(app).get(`/api/auth/${id}`).send({}).expect(401);
+  });
+  it('returns the currently logged in user', async () => {
+    const response = await request(app)
+      .post(signUpRoute)
+      .send({
+        username: 'Test 3',
+        email: 'test3@mail.com',
+        password: '1qaz2wsx3edc',
+      })
+      .expect(201);
+    return request(app)
+      .get(`/api/auth/${response.body.user.id}`)
+      .set('Authorization', ` Bearer ${global.login()}`)
+      .expect(200);
   });
 });
 describe('add users controller', () => {
