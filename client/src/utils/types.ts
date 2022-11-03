@@ -24,6 +24,20 @@ export type TTasks = {
   title: string;
   description: string;
   status: string;
+  image: string;
+};
+
+export type INewTask = {
+  title: string;
+  description: string;
+  image: string;
+};
+
+export type TMutateProps = {
+  isLoading: boolean;
+  isOpenDrawer: boolean;
+  dismissDrawer: () => void;
+  openDrawer: () => void;
 };
 
 export enum queryKeys {
