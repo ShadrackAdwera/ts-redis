@@ -20,14 +20,14 @@ const fetchTasks = async (
 
 const useFetchTasks = () => {
   const { userInfo } = useUser();
-  const { data } = useQuery(
+  const { data = [] } = useQuery(
     [queryKeys.TASKS],
     ({ signal }) => fetchTasks(userInfo?.token, signal),
     {
       enabled: !!userInfo,
     }
   );
-  return data;
+  return { tasks: data };
 };
 
 export default useFetchTasks;
