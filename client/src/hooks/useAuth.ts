@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import useUser from './useUser';
-import { TAuth } from '../utils/types';
+import { TAuth, TAuthResponse } from '../utils/types';
 
 type TUseAuth = {
   login(data: TAuth): Promise<void>;
@@ -17,11 +17,15 @@ const useAuth = (): TUseAuth => {
 
   const authMethod = async (authData: TAuth, url: string): Promise<void> => {
     try {
-      const { data, status } = await axios.post(url, authData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const { data, status }: AxiosResponse<TAuthResponse> = await axios.post(
+        url,
+        authData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       if (status === 400) {
         setMessage('Auth failed');
         return;
