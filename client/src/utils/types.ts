@@ -19,6 +19,13 @@ export type TAuthResponse = {
   };
 };
 
+export type TTasks = {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+};
+
 export enum queryKeys {
   USER = 'user',
   TASKS = 'tasks',
