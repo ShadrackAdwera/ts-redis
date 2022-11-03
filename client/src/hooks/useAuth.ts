@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 
 import useUser from './useUser';
 import { TAuth, TAuthResponse } from '../utils/types';
+import { setToLocalStorage } from '../utils/localStorage';
 
 type TUseAuth = {
   login(data: TAuth): Promise<void>;
@@ -32,6 +33,7 @@ const useAuth = (): TUseAuth => {
       }
       if ('user' in data && 'token' in data.user) {
         updateUser(data.user);
+        setToLocalStorage(data.user);
       }
       setMessage('Auth successful');
     } catch (error) {
